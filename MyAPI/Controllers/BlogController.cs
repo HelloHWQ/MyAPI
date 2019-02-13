@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyAPI.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace MyAPI.Controllers
 {
@@ -28,7 +30,12 @@ namespace MyAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Blog>> GetBlogs()
         {
-            return _context.Blog.Include(b => b.Post).ToList();
+            //JsonSerializerSettings settings = new JsonSerializerSettings();
+            //settings.ContractResolver = new DefaultContractResolver();
+
+            JsonResult jr = new JsonResult(_context.Blog.Include(b => b.Post).ToList());
+            return jr;
+            //return _context.Blog.Include(b => b.Post).ToList();
         }
 
         /// <summary>

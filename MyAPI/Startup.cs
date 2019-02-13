@@ -36,7 +36,7 @@ namespace MyAPI
                 //全局配置Json序列化处理
             .AddJsonOptions(options =>
             {
-                //忽略循环引用
+                //忽略循环引用(必须设置不然导航属性无法序列化)
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 //不使用驼峰样式的key
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
