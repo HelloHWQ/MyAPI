@@ -36,6 +36,9 @@ namespace MyAPI.Models
                 entity.Property(e => e.Url).IsRequired();
             });
 
+            // 映射实体关系，一对多
+            //modelBuilder.Entity<Blog>().HasMany(p => p.Post);
+
             modelBuilder.Entity<Post>(entity =>
             {
                 entity.HasOne(d => d.Blog)

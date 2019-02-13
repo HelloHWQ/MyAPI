@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyAPI.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace MyAPI
@@ -30,11 +32,23 @@ namespace MyAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                //全局配置Json序列化处理
+            .AddJsonOptions(options =>
+            {
+                //忽略循环引用
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                //不使用驼峰样式的key
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                //设置时间格式
+                options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
+            });
 
             // 注入访问数据库的上下文
-            services.AddDbContext<BloggingContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("BloggingDatabase")));
+            services.AddDbContext<BloggingContext>(options => {
+                    options.UseSqlServer(Configuration.GetConnectionString("BloggingDatabase"));
+                }
+            );
 
             // 添加中间件swagger的配置
             services.AddSwaggerGen(c =>

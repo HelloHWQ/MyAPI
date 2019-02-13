@@ -28,7 +28,7 @@ namespace MyAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Blog>> GetBlogs()
         {
-            return _context.Blog.ToList();
+            return _context.Blog.Include(b => b.Post).ToList();
         }
 
         /// <summary>

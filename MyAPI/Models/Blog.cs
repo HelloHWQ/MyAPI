@@ -7,7 +7,7 @@ namespace MyAPI.Models
     {
         public Blog()
         {
-            Post = new HashSet<Post>();
+            Post = new HashSet<Post>();            
         }
 
         public int BlogId { get; set; }
