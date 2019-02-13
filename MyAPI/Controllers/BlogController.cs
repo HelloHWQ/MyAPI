@@ -181,7 +181,8 @@ namespace MyAPI.Controllers
                 return NotFound();
             }
 
-            _context.Entry(blog).State = EntityState.Deleted;
+            //_context.Entry(blog).State = EntityState.Deleted;
+            _context.Blog.Remove(blog);
             _context.SaveChanges();
             return NoContent();
         }
