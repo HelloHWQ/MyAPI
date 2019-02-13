@@ -31,6 +31,22 @@
   <NoWarn>$(NoWarn);1591</NoWarn>
 </PropertyGroup>
 ```
+## 使用默认的Json序列化程序在序列化导航属性的时候会序列化不成功，这里配置Newtonsoft Json这替换全局的默认Json序列化
++ 通过NuGet安装 Newtonsoft Json程序包
++ 在Startup.中添加全局设置
+```
+services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+      //全局配置Json序列化处理
+  .AddJsonOptions(options =>
+  {
+      //忽略循环引用
+      options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+      //不使用驼峰样式的key
+      options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+      //设置时间格式
+      options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
+  });
+```
 ## IIS部署
 + 需安装对应版本的dotnet-hosting-2.2.1-win.exe
 + 应用程序池选择“无托管代码”和“集成模式”
