@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MyAPI.Common;
 using MyAPI.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -50,6 +51,9 @@ namespace MyAPI
                 }
             );
 
+            // 注入需要使用的配置文件
+            services.Configure<AppSet>(Configuration.GetSection("AppSet"));
+
             // 添加中间件swagger的配置
             services.AddSwaggerGen(c =>
             {
@@ -76,15 +80,18 @@ namespace MyAPI
             }
 
             // 启用swagger中间件并启用swagger UI
-            app.UseSwagger();
+            //app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
             // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-                c.RoutePrefix = string.Empty;  // 使api首页直接显示swagger说明页
-            });
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            //    c.RoutePrefix = string.Empty;  // 使api首页直接显示swagger说明页
+            //});
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
             app.UseMvc();

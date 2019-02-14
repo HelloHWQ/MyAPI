@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using MyAPI.Common;
 
 namespace MyAPI.Models
 {
@@ -10,20 +10,22 @@ namespace MyAPI.Models
         {
         }
 
-        public BloggingContext(DbContextOptions<BloggingContext> options)
+        public BloggingContext(DbContextOptions<BloggingContext> options, IOptions<AppSet> setting)
             : base(options)
         {
+            Appset = setting.Value;
         }
 
         public virtual DbSet<Blog> Blog { get; set; }
         public virtual DbSet<Post> Post { get; set; }
 
+        private AppSet Appset { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=AFAAW-807092021\\MSSQL2008R2;uid=sa;pwd=sa;Database=Blogging;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(Appset.SqlLinkStr);
             }
         }
 
